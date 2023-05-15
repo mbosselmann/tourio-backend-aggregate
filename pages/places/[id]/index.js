@@ -75,6 +75,11 @@ export default function DetailsPage() {
           Delete
         </StyledButton>
       </ButtonContainer>
+      <ul>
+        {place.visitors.map((visitor) => (
+          <li key={visitor._id}>{visitor.name}</li>
+        ))}
+      </ul>
     </>
   );
 }

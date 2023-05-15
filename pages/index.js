@@ -36,6 +36,7 @@ export default function Home() {
                 image={place.image}
                 location={place.location}
                 id={place._id}
+                visitorsCount={place.visitorsCount}
               />
             </ListItem>
           );

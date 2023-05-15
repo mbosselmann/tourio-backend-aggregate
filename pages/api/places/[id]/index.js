@@ -1,5 +1,6 @@
 import dbConnect from "../../../../db/connect";
 import Place from "../../../../db/models/Place";
+import mongoose from "mongoose";
 
 export default async function handler(request, response) {
   await dbConnect();
@@ -10,7 +11,19 @@ export default async function handler(request, response) {
   }
 
   if (request.method === "GET") {
-    const place = await Place.findById(id);
+    const [place] = await Place.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(id) },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "visitors",
+          foreignField: "_id",
+          as: "visitors",
+        },
+      },
+    ]);
     if (!place) {
       return response.status(404).json({ status: "Not found" });
     }
